@@ -70,99 +70,61 @@ export default function App() {
   };
 
   return (
-    // メインコンテナ：画面全体中央寄せ、背景グラデーション設定
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%)',
-      color: 'white',
-      fontFamily: '"Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
+    // メインコンテナ
+    <div className="min-h-screen flex flex-col items-center justify-center bg-linear-to-br from-[#1e1e2e] to-[#2d2d44] text-white font-sans relative overflow-hidden">
       {/* タイトル表示 */}
-      <h1 style={{ fontSize: '3rem', marginBottom: '2rem', textShadow: '0 4px 10px rgba(0,0,0,0.5)', fontWeight: 900 }}>
+      <h1 className="text-5xl font-black mb-8 drop-shadow-lg">
         じゃんけんゲーム
       </h1>
 
       {/* ゲーム未プレイ時（ユーザーの手が未決定）は選択ボタンを表示 */}
       {!userHand ? (
-        <div style={{ display: 'flex', gap: '2rem' }}>
+        <div className="flex gap-8">
           {/* HANDS配列をマップして各手のボタンを生成 */}
           {HANDS.map(hand => (
             <button
               key={hand}
               onClick={() => playGame(hand)}
-              style={{
-                width: '100px',
-                height: '100px',
-                borderRadius: '50%',
-                border: 'none',
-                background: 'rgba(255,255,255,0.1)',
-                backdropFilter: 'blur(5px)',
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                transition: 'transform 0.2s',
-                color: 'white'
-              }}
-              // ホバー時のアニメーション
-              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.1)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+              className="w-24 h-24 rounded-full border-none bg-white/10 backdrop-blur-sm cursor-pointer flex flex-col items-center justify-center text-white transition-transform hover:scale-110"
             >
-              <div style={{ fontSize: '2.5rem' }}>{getIcon(hand)}</div>
-              <div style={{ fontSize: '0.8rem', marginTop: '5px' }}>{getLabel(hand)}</div>
+              <div className="text-4xl">{getIcon(hand)}</div>
+              <div className="text-sm mt-1">{getLabel(hand)}</div>
             </button>
           ))}
         </div>
       ) : (
         // ゲーム終了後（結果表示画面）
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
+        <div className="flex flex-col items-center gap-8">
           {/* 対戦結果表示エリア */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '3rem' }}>
+          <div className="flex items-center gap-12">
             {/* ユーザー側の表示 */}
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ color: '#aaa', fontSize: '0.8rem', letterSpacing: '2px' }}>あなた</p>
-              <div style={{ fontSize: '4rem' }}>{getIcon(userHand)}</div>
+            <div className="text-center">
+              <p className="text-gray-400 text-xs tracking-widest">あなた</p>
+              <div className="text-6xl">{getIcon(userHand)}</div>
               <p>{getLabel(userHand)}</p>
             </div>
             {/* VSの文字 */}
-            <div style={{ fontSize: '2rem', opacity: 0.5 }}>VS</div>
+            <div className="text-3xl opacity-50">VS</div>
             {/* コンピューター側の表示 */}
-            <div style={{ textAlign: 'center' }}>
-              <p style={{ color: '#aaa', fontSize: '0.8rem', letterSpacing: '2px' }}>コンピューター</p>
-              <div style={{ fontSize: '4rem' }}>{computerHand ? getIcon(computerHand) : '?'}</div>
+            <div className="text-center">
+              <p className="text-gray-400 text-xs tracking-widest">コンピューター</p>
+              <div className="text-6xl">{computerHand ? getIcon(computerHand) : '?'}</div>
               <p>{computerHand ? getLabel(computerHand) : ''}</p>
             </div>
           </div>
 
           {/* 勝敗メッセージ表示（結果に応じて色を変更） */}
-          <div style={{
-            fontSize: '3rem', fontWeight: 'bold',
-            color: result === 'win' ? '#ffd700' : result === 'lose' ? '#ff6b6b' : '#fff'
-          }}>
+          <div className={`text-5xl font-bold ${result === 'win' ? 'text-[#ffd700]' :
+              result === 'lose' ? 'text-[#ff6b6b]' :
+                'text-white'
+            }`}>
             {result === 'win' ? 'あなたの勝ち！' : result === 'lose' ? 'あなたの負け...' : 'あいこ'}
           </div>
 
           {/* リセットボタン */}
           <button
             onClick={resetGame}
-            style={{
-              padding: '1rem 3rem',
-              borderRadius: '9999px',
-              border: 'none',
-              background: 'linear-gradient(90deg, #a855f7, #ec4899)',
-              color: 'white',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-              fontSize: '1rem'
-            }}
+            className="px-12 py-4 rounded-full border-none bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold cursor-pointer shadow-lg text-base hover:opacity-90 transition-opacity"
           >
             もう一度遊ぶ
           </button>
